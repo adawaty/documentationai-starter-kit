@@ -1,0 +1,155 @@
+---
+title: Quickstart Guide
+description: Get up and running with Hello in minutes by setting up your first project and using the ROI Wizard to evaluate potential implementations.
+---
+
+## Prerequisites
+
+<Callout kind="info" title="Before you begin">
+Ensure you have:
+- Access to the Hello dashboard at `https://dashboard.example.com`
+- A registered account with your email verified
+- Basic knowledge of your business vertical (EdTech, Booking, or Corporate/AI)
+</Callout>
+
+## Access the ROI Wizard
+
+The ROI Wizard helps you generate a customized business case based on your vertical. It calculates potential revenue gains, cost savings, and implementation timelines.
+
+Visit `https://dashboard.example.com/roi-wizard` to start.
+
+<Columns cols={3}>
+  <Card title="EdTech" icon="book-open" href="https://dashboard.example.com/roi-wizard?vertical=edtech">
+    Scale student onboarding and retention.
+  </Card>
+  <Card title="Booking" icon="calendar" href="https://dashboard.example.com/roi-wizard?vertical=booking">
+    Automate medical/legal scheduling.
+  </Card>
+  <Card title="Corporate/AI" icon="zap" href="https://dashboard.example.com/roi-wizard?vertical=corporate">
+    Build LLM-powered workflows.
+  </Card>
+</Columns>
+
+## Generate Your Business Case
+
+Follow these steps to create your first project.
+
+<Steps>
+  <Step title="Run ROI Wizard" icon="zap">
+    Enter your metrics:
+    
+    - Current monthly revenue
+    - Admin headcount
+    - No-show rate (for booking)
+    
+    Click "Generate Report" to get your personalized ROI projection.
+  </Step>
+  
+  <Step title="Review the Report" icon="bar-chart">
+    The wizard outputs:
+    
+    | Metric              | Projected Improvement |
+    |---------------------|-----------------------|
+    | Revenue Growth      | `+25%` in 3 months   |
+    | Admin Time Saved    | `40 hours/week`      |
+    | ROI Timeline        | `6 months` payback   |
+    
+    Download the PDF for your team.
+  </Step>
+  
+  <Step title="Initiate Contact" icon="mail">
+    Use the "Contact Team" button in the report.
+    
+    Provide:
+    - Your generated report ID
+    - Preferred vertical
+    - Timeline for kickoff
+    
+    Expect a response within `24 hours`.
+  </Step>
+</Steps>
+
+## Basic Workflow Mapping
+
+Map your first automation to kickstart implementation.
+
+<Tabs>
+  <Tab title="EdTech" icon="book-open">
+    Visualize a simple student onboarding flow:
+    
+    ```mermaid
+    graph TD
+        A[Lead Form] --> B[Automated Email]
+        B --> C[Payment Link]
+        C --> D[Onboarding Dashboard]
+        D --> E[Progress Tracking]
+    ```
+    
+    Share this diagram with your team.
+  </Tab>
+  
+  <Tab title="Booking" icon="calendar">
+    No-show reduction workflow:
+    
+    ```mermaid
+    sequenceDiagram
+        Client->>System: Book Appointment
+        System->>Client: Confirmation + Deposit
+        System->>Client: Reminder SMS
+        Client->>System: Confirm/Check-in
+    ```
+  </Tab>
+</Tabs>
+
+## Configure Your First Project
+
+Set up initial project settings via the dashboard API.
+
+<CodeGroup tabs="JavaScript,cURL">
+  ```javascript
+  const response = await fetch('https://api.example.com/v1/projects', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer YOUR_API_KEY',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: 'EdTech Onboarding Automation',
+      vertical: 'edtech'
+    })
+  });
+  
+  const project = await response.json();
+  console.log(`Project ID: ${project.id}`);
+  ```
+  
+  ```bash
+  curl -X POST https://api.example.com/v1/projects \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "name": "EdTech Onboarding Automation",
+      "vertical": "edtech"
+    }'
+  ```
+</CodeGroup>
+
+<ParamField path="vertical" param-type="string" required="true">
+  Your business vertical: `edtech`, `booking`, or `corporate`.
+</ParamField>
+
+<ParamField header="Authorization" param-type="string" required="true">
+  Bearer token from dashboard settings.
+</ParamField>
+
+## Next Steps
+
+<Callout kind="tip" title="Ready to build?">
+Schedule your kickoff call using the contact form in your ROI report. Prepare your current workflow diagrams for the discovery session.
+</Callout>
+
+<Expandable title="Troubleshooting Common Issues" default-open="false">
+- **Wizard not loading?** Clear browser cache and try incognito mode.
+- **API errors?** Verify your `{API_KEY}` is active in dashboard > Settings.
+- **Contact no response?** Check spam folder for `noreply@hello.com`.
+</Expandable>

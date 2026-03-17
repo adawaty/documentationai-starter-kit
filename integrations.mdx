@@ -1,0 +1,201 @@
+---
+title: Integrations and Customizations
+description: Learn how to connect Hello with third-party services, set up webhooks for real-time updates, and customize for specific verticals like medical booking.
+---
+
+## Overview
+
+Connect Hello to your favorite third-party services to automate workflows, process payments, and track events in real-time. You can integrate payment gateways like Stripe, scheduling tools like Calendly, and even LLM providers for intelligent copilots. Webhooks enable instant notifications for key events such as new bookings or completed payments.
+
+<Callout kind="tip">
+Start with webhooks for real-time data sync. Test integrations in sandbox mode before going live.
+</Callout>
+
+## Available Integrations
+
+Hello supports seamless connections to popular services across payments, scheduling, and AI.
+
+<Columns cols={3}>
+  <Card title="Payments" icon="credit-card" href="#payments">
+    Accept payments via Stripe or PayPal. Automate invoices and refunds.
+  </Card>
+  <Card title="Scheduling" icon="calendar" href="#scheduling">
+    Sync with Calendly or Google Calendar for booking automation.
+  </Card>
+  <Card title="LLM Copilots" icon="bot" href="#llm">
+    Integrate OpenAI or Anthropic for sales support automation.
+  </Card>
+</Columns>
+
+## Webhook Setup
+
+Set up webhooks to receive real-time events from Hello, such as `booking.created` or `payment.succeeded`. Provide a secure endpoint on your server.
+
+<Steps>
+  <Step title="Create Webhook" icon="plus">
+    In your Hello dashboard, navigate to Settings > Webhooks. Click "New Webhook".
+  </Step>
+  <Step title="Configure Endpoint" icon="link">
+    Enter your endpoint URL, e.g., `https://your-webhook-url.com/hello-events`. Select events to subscribe to.
+  </Step>
+  <Step title="Verify and Test" icon="check-circle">
+    Hello sends a verification challenge. Respond with HTTP 200. Test with a sample event.
+  </Step>
+</Steps>
+
+### Webhook Payload Example
+
+Expect JSON payloads with event data.
+
+<Request tabs="JavaScript,cURL" show-lines="true">
+  ```javascript
+  // Verify signature with Hello's secret
+  const signature = req.headers['x-hello-signature'];
+  const isValid = verifySignature(payload, signature, WEBHOOK_SECRET);
+  if (!isValid) return res.status(401).send('Unauthorized');
+  ```
+  ```bash
+  curl -X POST https://api.example.com/v1/webhooks \
+    -H "Content-Type: application/json" \
+    -H "X-Hello-Signature: v1=abc123..." \
+    -d '{"event": "booking.created", "data": {"id": "evt_123"}}'
+  ```
+</Request>
+
+<Response tabs="200">
+  ```json
+  {
+    "event": "booking.created",
+    "id": "evt_456",
+    "timestamp": 1699123456,
+    "data": {
+      "patientId": "pat_789",
+      "appointmentTime": "2024-01-15T10:00:00Z"
+    }
+  }
+  ```
+</Response>
+
+<ParamField path="event" param-type="string" required="true">
+  Event type, e.g., `booking.created`.
+</ParamField>
+
+<ParamField header="X-Hello-Signature" param-type="string" required="true">
+  HMAC signature for verification. Use `webhook_secret` from dashboard.
+</ParamField>
+
+## Payment Integrations
+
+<Tabs>
+  <Tab title="Stripe" icon="dollar-sign">
+    Connect Stripe for one-click payments in medical booking flows.
+
+    ```javascript
+    const stripe = require('stripe')('sk_test_YOUR_STRIPE_KEY');
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{ price: 'price_123', quantity: 1 }],
+      mode: 'payment',
+      success_url: 'https://dashboard.example.com/success?session_id={CHECKOUT_SESSION_ID}',
+    });
+    ```
+
+    <Callout kind="alert">
+      Store Stripe keys securely. Use test mode during development.
+    </Callout>
+  </Tab>
+  <Tab title="PayPal" icon="paypal">
+    Add PayPal for international payments.
+
+    ```javascript
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{ amount: { value: '99.00' } }]
+        });
+      }
+    }).render('#paypal-button-container');
+    ```
+  </Tab>
+</Tabs>
+
+## Custom Dashboard Configurations
+
+Tailor dashboards for verticals like medical booking.
+
+<Expandable title="Medical Booking Dashboard" default-open="true">
+  Customize widgets for patient intake and no-show tracking.
+
+  ```json
+  {
+    "widgets": [
+      {
+        "type": "calendar",
+        "filter": "status=pending"
+      },
+      {
+        "type": "metrics",
+        "metric": "no_show_rate"
+      }
+    ]
+  }
+  ```
+
+  Save via API: `POST https://api.example.com/v1/dashboards`.
+</Expandable>
+
+<Expandable title="EdTech Progress Dashboard">
+  Track student progress and retention.
+
+  ```javascript
+  fetch('https://api.example.com/v1/dashboards/custom', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${YOUR_TOKEN}` },
+    body: JSON.stringify({
+      layout: 'grid',
+      panels: ['progress', 'referrals']
+    })
+  });
+  ```
+</Expandable>
+
+## LLM Copilot Connections
+
+Integrate LLMs for automated support responses.
+
+<CodeGroup tabs="OpenAI,Anthropic">
+  ```javascript
+  // OpenAI integration
+  const openai = new OpenAI({ apiKey: 'YOUR_OPENAI_KEY' });
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [{ role: 'user', content: 'Suggest follow-up for patient no-show.' }]
+  });
+  ```
+  ```javascript
+  // Anthropic Claude
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': 'YOUR_ANTHROPIC_KEY',
+      'anthropic-version': '2023-06-01',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'claude-3-5-sonnet-20240620',
+      max_tokens: 1024,
+      messages: [{ role: 'user', content: 'Generate sales email.' }]
+    })
+  });
+  ```
+</CodeGroup>
+
+## Best Practices
+
+- Always verify webhook signatures to prevent replay attacks.
+- Use sandbox environments for testing integrations.
+- Monitor integration logs in the Hello dashboard for errors.
+
+<Callout kind="success">
+  Integrations unlock automation. Start with webhooks, then add payments and LLMs for full workflow coverage.
+</Callout>

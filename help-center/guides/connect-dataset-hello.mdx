@@ -1,0 +1,26 @@
+---
+title: Connect a dataset to Hello
+description: Step-by-step to upload your dataset to Hello.
+---
+
+## Overview
+
+Upload a CSV dataset to Hello for training your ML model.
+
+## Steps
+
+<Steps>
+  <Step title="Prepare your CSV">
+    Make sure your dataset is in CSV format, headers included.
+  </Step>
+  <Step title="Upload via API">
+    ````bash
+    curl -X POST https://hello.minasaat.com/v1/datasets \
+      -H "Authorization: Bearer YOUR_TOKEN" \
+      -F "file=@/path/to/your/data.csv"
+    ````
+  </Step>
+  <Step title="Check status">
+    View your dataset at `https://dashboard.minasaat.com/datasets`
+  </Step>
+</Steps>

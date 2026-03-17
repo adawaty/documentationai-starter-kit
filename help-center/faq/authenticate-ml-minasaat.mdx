@@ -1,0 +1,22 @@
+---
+title: How do I authenticate with Hello?
+description: Authentication steps for Hello API.
+---
+
+## Overview
+
+Every API request to Hello requires authentication with your ML Minasaat API token.
+
+## Steps
+
+1. Log into ML Minasaat dashboard
+2. Go to the "API" section
+3. Click "Generate Token"
+4. Copy the token and keep it secure
+
+## Example Usage
+
+```bash
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+  https://hello.minasaat.com/v1/models
+```

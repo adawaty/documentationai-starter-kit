@@ -1,0 +1,142 @@
+---
+title: Changelog
+description: Track the latest updates, improvements, and new features in Hello, with details on recent releases for ML Minasaat documentation.
+---
+
+## Recent Releases
+
+<Update label="2024-10-15" description="v1.2.0" tags={["feature", "improvement"]}>
+
+## New Features
+
+- Added AI-powered workflow automation for EdTech onboarding, reducing admin time by `50%`.
+- Introduced LLM copilot integration for corporate ops, with custom prompt chaining.
+- New booking system reminders via SMS and email, integrated with `https://api.example.com/notifications`.
+
+## Improvements
+
+- Enhanced ML model performance in triage systems, now supporting `>10k` predictions per hour.
+- Dashboard metrics now include real-time ROI tracking for all verticals.
+
+## Bug Fixes
+
+- Fixed no-show reduction logic in booking flows.
+- Resolved webhook retry failures during high load.
+
+</Update>
+
+<Update label="2024-09-20" description="v1.1.0" tags={["feature", "bugfix"]}>
+
+## New Features
+
+- Automated payment workflows for EdTech platforms, with Stripe integration.
+- Added referral loop tracking in user dashboards.
+
+## Improvements
+
+- Optimized database queries for legal/medical booking calendars.
+
+## Bug Fixes
+
+- Patched authentication token refresh issues.
+- Fixed progress tracking sync for multi-admin teams.
+
+</Update>
+
+<Update label="2024-08-10" description="v1.0.0" tags={["feature", "breaking"]}>
+
+## New Features
+
+- Initial release of core automation engine for verticals: EdTech, Booking, Corporate/AI.
+- Basic LLM integration for support and sales copilots.
+
+## Breaking Changes
+
+- Updated API base URL to `https://api.example.com/v1`.
+- Deprecated legacy webhook format; migrate to new schema.
+
+</Update>
+
+## Upgrade Instructions
+
+Follow these steps to update your Hello installation.
+
+<Steps>
+  <Step title="Backup Current Setup" icon="database">
+
+    Create a backup of your configuration and database.
+
+    ```
+    cp config.json config.json.bak
+    pg_dump hello_db > hello_backup.sql
+    ```
+
+  </Step>
+  <Step title="Update Package" icon="package">
+
+    <CodeGroup tabs="npm,yarn,pnpm">
+      ````bash
+      npm install hello-sdk@latest
+      ````
+
+      ````bash
+      yarn add hello-sdk@latest
+      ````
+
+      ````bash
+      pnpm add hello-sdk@latest
+      ````
+    </CodeGroup>
+
+  </Step>
+  <Step title="Run Migrations" icon="zap">
+
+    Apply database migrations.
+
+    ````bash
+    npx hello-sdk migrate
+    ````
+
+  </Step>
+  <Step title="Restart Services" icon="refresh-cw">
+
+    Restart your application server.
+
+    ```
+    pm2 restart hello-app
+    ```
+
+  </Step>
+</Steps>
+
+<Callout kind="tip">
+  Check the [migration guide](/changelog#breaking-changes) for v1.2.0 specifics. Test in staging before production.
+</Callout>
+
+## Upcoming Changes
+
+Stay ahead with planned enhancements.
+
+<Columns cols={2}>
+  <Card title="Q4 2024: Advanced Analytics" icon="bar-chart-3" href="#">
+
+    Real-time funnel optimization and A/B testing for workflows.
+
+  </Card>
+  <Card title="Q1 2025: Multi-Tenant Support" icon="users" href="#">
+
+    Shared instances for agencies managing multiple clients.
+
+  </Card>
+</Columns>
+
+<Expandable title="Deprecations" default-open="false">
+
+## Planned Deprecations
+
+- v1.3.0 (2025-01-15): Remove legacy `v0` API endpoints. Migrate to `https://api.example.com/v1`.
+- Callback URLs without HTTPS validation will fail.
+
+Use the `{legacyEndpoint}` config flag until then.
+
+</Expandable>

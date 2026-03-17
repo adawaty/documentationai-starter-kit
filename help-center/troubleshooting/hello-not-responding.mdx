@@ -1,0 +1,27 @@
+---
+title: Hello is not responding
+description: Fix connection issues with Hello endpoint.
+---
+
+## Symptoms
+
+- Hello API requests hang or fail
+- No response from `hello.minasaat.com`
+
+## Causes
+
+- Network or DNS issues
+- Invalid endpoint URL
+
+## Quick Fix
+
+<Steps>
+  <Step title="Check connection">
+    ````bash
+    curl -I https://hello.minasaat.com/health
+    ````
+  </Step>
+  <Step title="Verify endpoint">
+    Make sure the URL is exactly `hello.minasaat.com`.
+  </Step>
+</Steps>
